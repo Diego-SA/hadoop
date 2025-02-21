@@ -31,6 +31,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
         <!-- Use the version needed by maven-clover-plugin -->
         <version>3.0.2</version>
       </dependency>
+      <!-- <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.databind.version}</version>
+      </dependency> -->
     </dependencies>
   </dependencyManagement>
 
@@ -121,6 +126,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
     <shell-executable>bash</shell-executable>
 
     <leveldbjni.group>org.fusesource.leveldbjni</leveldbjni.group>
+
+    <!-- Common versions for centralizing it -->
+    <!-- <jackson.databind.version>2.18.2</jackson.databind.version> -->
+
   </properties>
 
   <modules>

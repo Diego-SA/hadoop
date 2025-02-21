@@ -200,6 +200,10 @@
           <groupId>org.apache.hadoop</groupId>
           <artifactId>hadoop-mapreduce-client-core</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>org.apache.htrace</groupId>
+          <artifactId>htrace-core</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
 
@@ -219,6 +223,10 @@
         <exclusion>
           <groupId>org.apache.hadoop</groupId>
           <artifactId>hadoop-mapreduce-client-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.htrace</groupId>
+          <artifactId>htrace-core</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -255,6 +263,10 @@
         <exclusion>
           <groupId>org.apache.hadoop</groupId>
           <artifactId>hadoop-distcp</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.htrace</groupId>
+          <artifactId>htrace-core</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -292,6 +304,10 @@
         <exclusion>
           <groupId>org.apache.hadoop</groupId>
           <artifactId>hadoop-distcp</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.htrace</groupId>
+          <artifactId>htrace-core</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

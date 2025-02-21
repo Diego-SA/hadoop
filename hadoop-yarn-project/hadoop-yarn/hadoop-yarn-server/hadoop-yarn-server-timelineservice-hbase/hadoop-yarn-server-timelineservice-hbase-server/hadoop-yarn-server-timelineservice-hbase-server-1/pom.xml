@@ -89,6 +89,10 @@
               <groupId>org.mortbay.jetty</groupId>
               <artifactId>jetty-util</artifactId>
             </exclusion>
+            <exclusion>
+              <groupId>org.apache.htrace</groupId>
+              <artifactId>htrace-core</artifactId>
+            </exclusion>
           </exclusions>
         </dependency>
 
@@ -99,6 +103,10 @@
             <exclusion>
               <groupId>org.apache.hadoop</groupId>
               <artifactId>hadoop-mapreduce-client-core</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>org.apache.htrace</groupId>
+              <artifactId>htrace-core</artifactId>
             </exclusion>
           </exclusions>
         </dependency>
@@ -135,6 +143,10 @@
             <exclusion>
               <groupId>org.mortbay.jetty</groupId>
               <artifactId>jetty-sslengine</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>org.apache.htrace</groupId>
+              <artifactId>htrace-core</artifactId>
             </exclusion>
           </exclusions>
         </dependency>
