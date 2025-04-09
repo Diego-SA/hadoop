@@ -16,6 +16,9 @@
 
 set -o pipefail
 
+echo "Executing script"
+echo "$0"
+
 # Bundle a native library if requested. Exit 1 in case error happens.
 # Usage: bundle_native_lib bundleoption liboption libpattern libdir
 function bundle_native_lib()
