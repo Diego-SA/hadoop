@@ -138,11 +138,13 @@ public class SecureableZone extends Zone {
     SetResponse sr = zone.findRecords(base.getName(), Type.ANY);
     BitSet bitMap = new BitSet();
     bitMap.set(Type.NXT);
-    RRset[] rRsets = sr.answers();
-    for (RRset rRset : rRsets) {
-      int typeCode = rRset.getType();
-      if (typeCode > 0 && typeCode < 128) {
-        bitMap.set(typeCode);
+    List<RRset> rRsets = sr.answers();
+    if (rRsets != null) {
+      for (RRset rRset : rRsets) {
+        int typeCode = rRset.getType();
+        if (typeCode > 0 && typeCode < 128) {
+          bitMap.set(typeCode);
+        }
       }
     }
     return new NXTRecord(base.getName(), DClass.IN, zone.getSOA().getMinimum(),

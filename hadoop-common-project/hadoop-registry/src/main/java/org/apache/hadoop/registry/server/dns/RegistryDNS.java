@@ -233,12 +233,12 @@ public class RegistryDNS extends AbstractService implements DNSOperations,
       }
       ResolverConfig.refresh();
       ExtendedResolver resolver;
-      try {
+      //try {
         resolver = new ExtendedResolver();
-      } catch (UnknownHostException e) {
+      /*} catch (UnknownHostException e) {
         LOG.error("Can not resolve DNS servers: ", e);
         return;
-      }
+      }*/
       for (Resolver check : resolver.getResolvers()) {
         if (check instanceof SimpleResolver) {
           InetAddress address = ((SimpleResolver) check).getAddress()
@@ -261,9 +261,11 @@ public class RegistryDNS extends AbstractService implements DNSOperations,
       StringBuilder message = new StringBuilder();
       message.append("DNS servers: ");
       if (ResolverConfig.getCurrentConfig().servers() != null) {
-        for (String server : ResolverConfig.getCurrentConfig()
-            .servers()) {
-          message.append(server);
+        //for (String server : ResolverConfig.getCurrentConfig().servers()) {
+        for (InetSocketAddress server : ResolverConfig.getCurrentConfig().servers()) {
+          String host = server.getHostName();
+          //message.append(server);
+          message.append(host);
           message.append(" ");
         }
       }
@@ -334,8 +336,16 @@ public class RegistryDNS extends AbstractService implements DNSOperations,
         Iterator itor = zone.iterator();
         while (itor.hasNext()) {
           RRset rRset = (RRset) itor.next();
-          Iterator sigs = rRset.sigs();
+          /*Iterator sigs = rRset.sigs();
           if (!sigs.hasNext()) {
+            try {
+              signSiteRecord(zone, rRset.first());
+            } catch (DNSSEC.DNSSECException e) {
+              throw new IOException(e);
+            }
+          }*/
+          List<RRSIGRecord> sigs = rRset.sigs();
+          if (sigs.isEmpty()) {
             try {
               signSiteRecord(zone, rRset.first());
             } catch (DNSSEC.DNSSECException e) {
@@ -1403,15 +1413,17 @@ public class RegistryDNS extends AbstractService implements DNSOperations,
           response.getHeader().setFlag(Flags.AA);
         }
       } else if (sr.isSuccessful()) {
-        RRset[] rrsets = sr.answers();
-        LOG.info("found answers {}", rrsets);
-        for (int i = 0; i < rrsets.length; i++) {
-          addRRset(name, response, rrsets[i],
-              Section.ANSWER, flags);
-        }
-        addNS(response, zone, flags);
-        if (iterations == 0) {
-          response.getHeader().setFlag(Flags.AA);
+        List<RRset> rrsets = sr.answers();
+        if (rrsets != null) {
+          LOG.info("found answers {}", rrsets);
+          for (RRset rrset : rrsets) {
+            addRRset(name, response, rrset,
+                    Section.ANSWER, flags);
+          }
+          addNS(response, zone, flags);
+          if (iterations == 0) {
+            response.getHeader().setFlag(Flags.AA);
+          }
         }
       }
     } else {
@@ -1515,9 +1527,16 @@ public class RegistryDNS extends AbstractService implements DNSOperations,
       }
     }
     if ((flags & FLAG_SIGONLY) == 0) {
-      Iterator it = rrset.rrs();
+      /*Iterator it = rrset.rrs();
       while (it.hasNext()) {
         Record r = (Record) it.next();
+        if (r.getName().isWild() && !name.isWild()) {
+          r = r.withName(name);
+        }
+        response.addRecord(r, section);
+      }*/
+      List<Record> records = rrset.rrs();
+      for (Record r : records) {
         if (r.getName().isWild() && !name.isWild()) {
           r = r.withName(name);
         }
@@ -1525,9 +1544,16 @@ public class RegistryDNS extends AbstractService implements DNSOperations,
       }
     }
     if ((flags & (FLAG_SIGONLY | FLAG_DNSSECOK)) != 0) {
-      Iterator it = rrset.sigs();
+      /*Iterator it = rrset.sigs();
       while (it.hasNext()) {
         Record r = (Record) it.next();
+        if (r.getName().isWild() && !name.isWild()) {
+          r = r.withName(name);
+        }
+        response.addRecord(r, section);
+      }*/
+      List<RRSIGRecord> records = rrset.sigs();
+      for (Record r : records) {
         if (r.getName().isWild() && !name.isWild()) {
           r = r.withName(name);
         }
